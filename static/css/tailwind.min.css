@@ -1,0 +1,191 @@
+html,
+body {
+  --tw-bg-opacity: 1;
+  background-color: rgb(231 236 239 / var(--tw-bg-opacity));
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  display: flex; /* Use flexbox for the body */
+  height: 100vh; /* Full height for the viewport */
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 10px 20px;
+  width: 100%; /* Ensure header takes full width */
+  position: fixed; /* Fix header at the top */
+  z-index: 1000; /* Ensure it stays on top of other content */
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 50px;
+  margin-right: 10px;
+}
+
+.logo-text {
+  font-size: 24px;
+  font-weight: bold;
+  color: rgb(80, 135, 255); /* Fixed color syntax */
+}
+
+.sidebar {
+  width: 250px;
+  background-color: rgb(80, 135, 255);
+  height: calc(100vh - 100px); /* height minus header height */
+  padding: 1rem; /* Padding for the sidebar */
+  position: fixed;
+  top: 100px; /* Align to the top, below the header */
+  left: 0; /* Align to the left */
+  overflow-y: auto; /* Enable scrolling if content overflows */
+}
+
+.sidebar a {
+  display: block;
+  margin: 0.5rem 0; /* Margin between links */
+  padding: 0.5rem; /* Padding for each link */
+  text-decoration: none;
+  color: #000; /* Text color */
+  border-radius: 0.25rem; /* Rounded corners */
+}
+
+.sidebar a:hover {
+  background-color: #e2e8f0; /* color on hover */
+}
+
+.sidebar .Workout {
+  font-size: 24;
+  color: white;
+  font-weight: bold;
+}
+
+.sidebar .MyWorkout {
+  font-size: 24;
+  color: white;
+  font-weight: bold;
+}
+
+.sidebar .GenerateWorkout {
+  font-size: 24;
+  color: white;
+  font-weight: bold;
+}
+.content1 {
+  margin-left: 250px; /* Leave space for the sidebar */
+  padding: 2rem; /* Padding for the content */
+  padding-top: 100px; /* Offset for fixed header */
+  height: calc(100vh - 100px); /* Full height minus header height */
+  overflow-y: auto; /* Enable scrolling if content overflows */
+}
+
+
+/*------------------------------------------------------------------------ GENERATE WORKOUT SECTION ------------------------------------------------------- */
+
+
+.content2 {
+  margin-left: 600px; /* Leave space for the sidebar */
+  padding: 2rem; /* Padding for the content */
+  padding-top: 100px; /* Offset for fixed header */
+  height: calc(100vh - 100px); /* Full height minus header height */
+  width: 100%;
+  display: flex; 
+  align-items: center;
+  justify-content: center;
+  background: #f6f7fb;
+}
+
+
+/* Progress Bar Container */
+.progress-container{
+  max-width: 400px;
+  width: 100%;
+
+}
+
+/* Progress Bar */
+.progress-container .progress-bar {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+}
+.progress-bar .circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  width: 50px;
+  font-size: 22px;
+  font-weight: 500;
+  border-radius: 50%;
+  border: 4px solid #e0e0e0;
+
+}
+
+/* Form Question Styling */
+.step {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.step h2 {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+/* Big Buttons */
+.big-button {
+  background-color: #4caf50;
+  color: white;
+  padding: 20px 40px;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.big-button:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
+
+.big-button.selected {
+  background-color: #008c46;
+  transform: scale(1.1); /* Make the selected button slightly bigger */
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+/*------------------------------------------------------------------------ PROGRESS BAR -------------------------------------------------------

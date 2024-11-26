@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Workout Recommendation</title>
+    <link
+      href="{{ url_for('static', filename='css/tailwind.min.css') }}"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="header-container">
+      <div class="logo-container">
+        <img src="../static/logo.png" class="logo" alt="logo" />
+        <p class="logo-text">Huwag kang Tamad</p>
+      </div>
+    </header>
+
+    <div class="sidebar">
+      <a href="{{url_for('main.home')}}" class="Workout">Workout</a>
+      <a href="{{url_for('main.workout')}}" class="MyWorkout">My Workout</a>
+      <a href="{{url_for('main.my_workout')}}" class="GenerateWorkout"
+        >Generate Workout</a
+      >
+    </div>
+
+    {% block content %}
+    <div class="content1">
+      <h1>Page Content</h1>
+
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <form id="workout-form">
+          <label for="goal" class="block text-lg">Select Your Goal:</label>
+          <select
+            id="goal"
+            class="form-select mt-2 mb-4 w-full p-2 border rounded"
+          >
+            <option value="muscle-building">Muscle Building</option>
+            <option value="weight-loss">Weight Loss</option>
+          </select>
+
+          <label for="equipment" class="block text-lg"
+            >Select Available Equipment:</label
+          >
+          <input
+            type="text"
+            id="equipment"
+            class="mt-2 mb-4 w-full p-2 border rounded"
+            placeholder="E.g., Dumbbells, No Equipment"
+          />
+
+          <label for="time" class="block text-lg">Time (minutes):</label>
+          <input
+            type="number"
+            id="time"
+            class="mt-2 mb-4 w-full p-2 border rounded"
+            placeholder="E.g., 30"
+          />
+
+          <button type="submit" class="bg-blue-500 text-white p-2 rounded">
+            Get Recommendations
+          </button>
+        </form>
+      </div>
+
+      <div id="recommendations" class="mt-6"></div>
+    </div>
+    {% endblock %}
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+</html>

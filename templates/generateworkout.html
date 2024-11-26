@@ -1,0 +1,176 @@
+{% extends 'index.html' %} {% block title %}GenerateWorkout{% endblock %} {%
+block content %}
+
+<div class="content2">
+  <h1>Complete the Assessment to Generate Your Workout</h1>
+
+  <div class="progress-container">
+    <div class="progress-bar">
+      <span class="circle">1</span>
+      <span class="circle">2</span>
+      <span class="circle">3</span>
+      <span class="circle">4</span>
+      <span class="circle">5</span>
+    </div>
+  </div>
+
+  <form id="assessment-form">
+    <!-- Step 1 of the form-->
+    <div id="step-1" class="step">
+      <h2>Gender?</h2>
+      <div class="button-group-step-1">
+        <button
+          type="button"
+          class="big-button"
+          onclick="selectOption('gender', 'male')"
+        >
+          Male
+        </button>
+        <button
+          type="button"
+          class="big-button"
+          onclick="selectOption('gender', 'female')"
+        >
+          Female
+        </button>
+      </div>
+      <button type="button" onclick="nextStep(1)">Next</button>
+    </div>
+
+    <!-- Step 2: Age-->
+    <div id="step-2" class="step" style="display: none">
+      <h2>What is your age?</h2>
+      <div class="button-group">
+        <button
+          type="button"
+          class="big-button"
+          onclick="selectOption('age', '18-25')"
+        >
+          18-25
+        </button>
+        <button
+          type="button"
+          class="big-button"
+          onclick="selectOption('age', '26-35')"
+        >
+          26-35
+        </button>
+        <button
+          type="button"
+          class="big-button"
+          onclick="selectOption('age', '36-45')"
+        >
+          36-45
+        </button>
+        <button
+          type="button"
+          class="big-button"
+          onclick="selectOption('age', '46-60')"
+        >
+          46-60
+        </button>
+        <button
+          type="button"
+          class="big-button"
+          onclick="selectOption('age', '60+')"
+        >
+          60+
+        </button>
+      </div>
+      <button type="button" onclick="previousStep(2)">Back</button>
+      <button type="button" onclick="nextStep(2)">Next</button>
+    </div>
+
+    <!-- Step 3: Fitness Goal Selection -->
+    <div id="step-3" class="step" style="display: none">
+      <h2>Fitness Goal</h2>
+      <div class="button-group">
+        <button
+          type="button"
+          class="big-button"
+          onclick="selectOption('goal', 'muscle-building')"
+        >
+          Muscle Building
+        </button>
+        <button
+          type="button"
+          class="big-button"
+          onclick="selectOption('goal', 'weight-loss')"
+        >
+          Weight Loss
+        </button>
+      </div>
+      <button type="button" onclick="previousStep(3)">Back</button>
+      <button type="button" onclick="nextStep(3)">Next</button>
+    </div>
+
+    <!-- Step 4: Available equipment -->
+    <div id="step-4" class="step" style="display: none">
+      <h2>Choose Equipment</h2>
+      <div class="button-group">
+        <button
+          type="button"
+          class="big-button"
+          onclick="selectOption('equipment', 'dumbbells')"
+        >
+          Dumbbells
+        </button>
+        <button
+          type="button"
+          class="big-button"
+          onclick="selectOption('equipment', 'no-equipment')"
+        >
+          No Equipment
+        </button>
+        <button
+          type="button"
+          class="big-button"
+          onclick="selectOption('equipment', 'resistance-bands')"
+        >
+          Resistance Bands
+        </button>
+      </div>
+      <button type="button" onclick="previousStep(4)">Back</button>
+      <button type="button" onclick="nextStep(4)">Next</button>
+    </div>
+
+    <!-- Step 5: Body Part to Target -->
+    <div id="step-5" class="step" style="display: none">
+      <h2>Step 5: Which body part do you want to target?</h2>
+      <div class="button-group">
+        <button
+          type="button"
+          class="big-button"
+          onclick="selectOption('body_part', 'arms')"
+        >
+          Arms
+        </button>
+        <button
+          type="button"
+          class="big-button"
+          onclick="selectOption('body_part', 'legs')"
+        >
+          Legs
+        </button>
+        <button
+          type="button"
+          class="big-button"
+          onclick="selectOption('body_part', 'full-body')"
+        >
+          Full Body
+        </button>
+        <button
+          type="button"
+          class="big-button"
+          onclick="selectOption('body_part', 'core')"
+        >
+          Core
+        </button>
+      </div>
+      <button type="button" onclick="previousStep(5)">Back</button>
+      <button type="submit">Generate Recommendations</button>
+    </div>
+  </form>
+
+  {% endblock %}
+</div>
