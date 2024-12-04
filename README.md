@@ -9,7 +9,7 @@ The textual data from the dataset (exercise titles, descriptions, etc.) is used 
 
 The dataset was used in our homepage which displayed all exercises from the dataset.
 
-The type of recommendation algorithm used was "content-based filtering". Content-based filtering recommends items to users based on the attributes or characteristics of the items and the preferences or profiles of the users. 
+The type of recommendation method used was "content-based filtering". Content-based filtering recommends items to users based on the attributes or characteristics of the items and the preferences or profiles of the users. 
 unlike collaborative filtering, content-based filtering does not rely on other user's profile to make recommendations. This method relies solely on the content (e.g., descriptions, features)
 of the items to make recommendations
 
@@ -17,6 +17,8 @@ The user is described by their fitness profile, including characteristics like l
 The profile is essentially a description of the user’s preferences or needs,
 
 The system compares the user profile's textual description with the exercises' descriptions using TF-IDF (Term Frequency-Inverse Document Frequency) and Cosine Similarity.
+
+
 
 Based on the similarity between the user's profile and the exercises' content, the system selects and recommends the most similar exercises.
 
