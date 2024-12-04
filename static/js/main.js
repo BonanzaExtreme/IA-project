@@ -1,88 +1,217 @@
-// static/js/main.js
+let currentstep = 1;
 
-document
-  .getElementById("workout-form")
-  .addEventListener("submit", async (event) => {
-    event.preventDefault();
+const userData = {
+  level: "",
+  age: "",
+  goal: "",
+  equipment: "",
+  body_part: "",
+};
 
-    const goal = document.getElementById("goal").value;
-    const equipment = document.getElementById("equipment").value;
-    const time = parseInt(document.getElementById("time").value);
+window.onload = () => {
+  document.getElementById(`step-${currentstep}`).style.display = "block";
+  updateProgressbar();
+  enableNextButton();
 
-    const response = await fetch("/recommend", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ goal, equipment, time }),
-    });
+  const likedExercises =
+    JSON.parse(localStorage.getItem("likedExercises")) || [];
+  likedExercises.forEach((exerciseId) => {
+    updateLikeButton(exerciseId);
+  });
+};
 
-    const recommendations = await response.json();
-    const recommendationsDiv = document.getElementById("recommendations");
-    recommendationsDiv.innerHTML =
-      '<h2 class="text-2xl font-semibold">Recommended Workouts:</h2>';
+function enableNextButton() {
+  const currentStepButtons = document.querySelectorAll(
+    `#step-${currentstep} .big-button`
+  );
+  const nextButton = document.getElementById(`next-${currentstep}`);
 
-    recommendations.forEach((exercise) => {
-      recommendationsDiv.innerHTML += `
-        <div class="bg-gray-200 p-4 mt-4 rounded">
-          <h3 class="font-semibold">${exercise.name}</h3>
-          <p>Muscle: ${exercise.muscle}</p>
-          <p>Duration: ${exercise.duration} minutes</p>
-        </div>
-      `;
-    });
+  const anySelected = Array.from(currentStepButtons).some((btn) =>
+    btn.classList.contains("selected")
+  );
+
+  nextButton.disabled = !anySelected;
+}
+function nextStep(step) {
+  if (step < 5 && isStepValid(step)) {
+    document.getElementById(`step-${step}`).style.display = "none";
+    currentstep++;
+    document.getElementById(`step-${currentstep}`).style.display = "block";
+    updateProgressbar();
+    enableNextButton();
+  }
+}
+
+function previousStep(step) {
+  if (step > 1) {
+    document.getElementById(`step-${step}`).style.display = "none";
+    currentstep--;
+    document.getElementById(`step-${currentstep}`).style.display = "block";
+    updateProgressbar();
+    enableNextButton();
+  }
+}
+
+function isStepValid(step) {
+  return userData[step] !== "";
+}
+
+function updateProgressbar() {
+  const circles = document.querySelectorAll(".circle");
+  const indicator = document.querySelector(".indicator");
+
+  circles.forEach((circle, index) => {
+    if (index < currentstep) {
+      circle.classList.add("active");
+    } else {
+      circle.classList.remove("active");
+    }
   });
 
-let currentStep = 1; // Tracks the current step
-const totalSteps = 5; // Total number of steps
-
-// Function to update the progress bar
-function updateProgressBar() {
-  const progress = (currentStep / totalSteps) * 100;
-  document.getElementById("progress-bar").style.width = progress + "%";
+  const progressPercentage = (currentstep / circles.length) * 100;
+  indicator.style.width = progressPercentage + "%";
 }
 
-// Function to move to the next step
-function nextStep(step) {
-  const currentStepDiv = document.getElementById(`step-${step}`);
-  const nextStepDiv = document.getElementById(`step-${step + 1}`);
-
-  // Hide the current step and show the next step
-  currentStepDiv.style.display = "none";
-  nextStepDiv.style.display = "block";
-
-  currentStep++;
-  updateProgressBar();
-}
-
-// Function to move to the previous step
-function previousStep(step) {
-  const currentStepDiv = document.getElementById(`step-${step}`);
-  const previousStepDiv = document.getElementById(`step-${step - 1}`);
-
-  // Hide the current step and show the previous step
-  currentStepDiv.style.display = "none";
-  previousStepDiv.style.display = "block";
-
-  currentStep--;
-  updateProgressBar();
-}
-
-// Function to handle selecting an option
-function selectOption(step, value) {
-  // Remove "selected" class from all buttons in the current step
-  const buttons = document.querySelectorAll(`#step-${currentStep} .big-button`);
-  buttons.forEach((button) => button.classList.remove("selected"));
-
-  // Add "selected" class to the clicked button
-  const selectedButton = document.querySelector(
-    `#step-${currentStep} .big-button[onclick*="${value}"]`
+function selectOption(type, value) {
+  userData[type] = value;
+  console.log(userData);
+  const currentStepButtons = document.querySelectorAll(
+    `#step-${currentstep} .big-button`
   );
-  selectedButton.classList.add("selected");
 
-  // Store the selected value (you can handle it here, e.g., store in form or variable)
-  document.getElementById(step).value = value;
+  currentStepButtons.forEach((button) => {
+    button.classList.remove("selected");
+  });
+
+  const selectedbutton = Array.from(currentStepButtons).find(
+    (button) => button.innerText.toLowerCase() == value.toLowerCase()
+  );
+
+  if (selectedbutton) {
+    selectedbutton.classList.add("selected");
+  }
+
+  enableNextButton();
 }
 
-// Initial progress bar setup
-updateProgressBar();
+function generateRecommendations(event) {
+  event.preventDefault();
+  console.log("Sending user data:", userData);
+  fetch("/generate_workout", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userData),
+  })
+    .then((response) => response.json())
+    .then((recommendations) => {
+      const recommendationList = document.getElementById("exercise-list-2");
+      recommendationList.innerHTML = "";
+
+      recommendations.forEach((exercise) => {
+        const exerciseContainer = document.createElement("div");
+        exerciseContainer.classList.add("exercise-container-2");
+
+        const nameElement = document.createElement("h3");
+        nameElement.classList.add("exercise-name");
+        nameElement.textContent = exercise.name;
+
+        const descriptionElement = document.createElement("p");
+        descriptionElement.classList.add("exercise-description");
+        descriptionElement.textContent = `Description: ${exercise.description}`;
+
+        const typeElement = document.createElement("p");
+        typeElement.classList.add("exercise-type");
+        typeElement.textContent = `Type: ${exercise.type}`;
+
+        const equipmentElement = document.createElement("p");
+        equipmentElement.classList.add("exercise-equipment");
+        equipmentElement.textContent = `Equipment: ${exercise.equipment}`;
+
+        const targetElement = document.createElement("p");
+        targetElement.classList.add("exercise-target");
+        targetElement.textContent = `Target: ${exercise.target}`;
+
+        const instructionsElement = document.createElement("p");
+        instructionsElement.classList.add("exercise-instructions");
+        instructionsElement.textContent = `Instructions: ${exercise.instructions}`;
+
+        const repsElement = document.createElement("p");
+        repsElement.classList.add("exercise-reps");
+        repsElement.textContent = `Reps: ${exercise.reps}`;
+
+        const instructionsButton = document.createElement("button");
+        instructionsButton.classList.add("instructions-button");
+        instructionsButton.textContent = "Show Instructions";
+
+        instructionsButton.addEventListener("click", () => {
+          instructionsElement.classList.toggle("visible");
+          if (instructionsElement.classList.contains("visible")) {
+            instructionsButton.textContent = "Hide Instructions";
+          } else {
+            instructionsButton.textContent = "Show Instructions";
+          }
+        });
+
+        exerciseContainer.appendChild(nameElement);
+        exerciseContainer.appendChild(descriptionElement);
+        exerciseContainer.appendChild(typeElement);
+        exerciseContainer.appendChild(equipmentElement);
+        exerciseContainer.appendChild(targetElement);
+        exerciseContainer.appendChild(instructionsElement);
+        exerciseContainer.appendChild(instructionsButton);
+        exerciseContainer.appendChild(repsElement);
+
+        const recommendationList = document.getElementById("exercise-list-2");
+        recommendationList.appendChild(exerciseContainer);
+      });
+
+      document.getElementById("recommendations-container").style.display =
+        "block";
+    })
+    .catch((error) => {
+      console.error("Error generating workout recommendations:", error);
+    });
+}
+
+document
+  .getElementById("assessment-form")
+  .addEventListener("submit", function (event) {
+    event.preventDefault;
+    console.log("User data before submission", userData);
+    generateRecommendations(event);
+  });
+
+function toggleLike(exerciseId) {
+  let likedExercises = JSON.parse(localStorage.getItem("likedExercises")) || [];
+
+  const index = likedExercises.indexOf(exerciseId);
+
+  if (index > -1) {
+    likedExercises.splice(index, 1);
+  } else {
+    likedExercises.push(exerciseId);
+  }
+
+  localStorage.setItem("likedExercises", JSON.stringify(likedExercises));
+
+  updateLikeButton(exerciseId);
+}
+
+function updateLikeButton(exerciseId) {
+  const likedExercises =
+    JSON.parse(localStorage.getItem("likedExercises")) || [];
+  const likeButton = document.getElementById(`like-btn-${exerciseId}`);
+  const heartIcon = likeButton.querySelector("i");
+
+  if (likedExercises.includes(exerciseId)) {
+    likeButton.textContent = "Unlike";
+    likeButton.appendChild(heartIcon);
+    likeButton.classList.add("liked");
+  } else {
+    likeButton.textContent = "Like";
+    likeButton.appendChild(heartIcon);
+    likeButton.classList.remove("liked");
+  }
+}

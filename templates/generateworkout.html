@@ -1,8 +1,8 @@
 {% extends 'index.html' %} {% block title %}GenerateWorkout{% endblock %} {%
 block content %}
 
-<div class="content2">
-  <h1>Complete the Assessment to Generate Your Workout</h1>
+<div class="content">
+  <h3>Complete the Assessment to Generate Your Workout</h3>
 
   <div class="progress-container">
     <div class="progress-bar">
@@ -11,30 +11,48 @@ block content %}
       <span class="circle">3</span>
       <span class="circle">4</span>
       <span class="circle">5</span>
+      <div class="progress-bar2">
+        <span class="indicator"> </span>
+      </div>
     </div>
   </div>
 
   <form id="assessment-form">
     <!-- Step 1 of the form-->
     <div id="step-1" class="step">
-      <h2>Gender?</h2>
-      <div class="button-group-step-1">
+      <h2>Your fitness level?</h2>
+      <div class="button-group">
         <button
           type="button"
           class="big-button"
-          onclick="selectOption('gender', 'male')"
+          onclick="selectOption('level', 'beginner')"
         >
-          Male
+          Beginner
         </button>
         <button
           type="button"
           class="big-button"
-          onclick="selectOption('gender', 'female')"
+          onclick="selectOption('level', 'intermediate')"
         >
-          Female
+          Intermediate
+        </button>
+        <button
+          type="button"
+          class="big-button"
+          onclick="selectOption('level', 'advanced')"
+        >
+          Advanced
         </button>
       </div>
-      <button type="button" onclick="nextStep(1)">Next</button>
+      <button
+        type="button"
+        class="navi-button"
+        id="next-1"
+        onclick="nextStep(1)"
+        disabled
+      >
+        Next
+      </button>
     </div>
 
     <!-- Step 2: Age-->
@@ -77,8 +95,17 @@ block content %}
           60+
         </button>
       </div>
-      <button type="button" onclick="previousStep(2)">Back</button>
-      <button type="button" onclick="nextStep(2)">Next</button>
+      <button type="button" class="navi-button" onclick="previousStep(2)">
+        Back
+      </button>
+      <button
+        type="button"
+        class="navi-button"
+        id="next-2"
+        onclick="nextStep(2)"
+      >
+        Next
+      </button>
     </div>
 
     <!-- Step 3: Fitness Goal Selection -->
@@ -88,20 +115,36 @@ block content %}
         <button
           type="button"
           class="big-button"
-          onclick="selectOption('goal', 'muscle-building')"
+          onclick="selectOption('goal', 'strength')"
         >
-          Muscle Building
+          Strength
         </button>
         <button
           type="button"
           class="big-button"
-          onclick="selectOption('goal', 'weight-loss')"
+          onclick="selectOption('goal', 'weight loss')"
         >
           Weight Loss
         </button>
+        <button
+          type="button"
+          class="big-button"
+          onclick="selectOption('goal', 'warm-up')"
+        >
+          Warm-Up
+        </button>
       </div>
-      <button type="button" onclick="previousStep(3)">Back</button>
-      <button type="button" onclick="nextStep(3)">Next</button>
+      <button type="button" class="navi-button" onclick="previousStep(3)">
+        Back
+      </button>
+      <button
+        type="button"
+        class="navi-button"
+        id="next-3"
+        onclick="nextStep(3)"
+      >
+        Next
+      </button>
     </div>
 
     <!-- Step 4: Available equipment -->
@@ -111,32 +154,34 @@ block content %}
         <button
           type="button"
           class="big-button"
-          onclick="selectOption('equipment', 'dumbbells')"
+          onclick="selectOption('equipment', 'body weight')"
         >
-          Dumbbells
+          Body Weight
         </button>
         <button
           type="button"
           class="big-button"
-          onclick="selectOption('equipment', 'no-equipment')"
-        >
-          No Equipment
-        </button>
-        <button
-          type="button"
-          class="big-button"
-          onclick="selectOption('equipment', 'resistance-bands')"
+          onclick="selectOption('equipment', 'resistance bands')"
         >
           Resistance Bands
         </button>
       </div>
-      <button type="button" onclick="previousStep(4)">Back</button>
-      <button type="button" onclick="nextStep(4)">Next</button>
+      <button type="button" class="navi-button" onclick="previousStep(4)">
+        Back
+      </button>
+      <button
+        type="button"
+        class="navi-button"
+        id="next-4"
+        onclick="nextStep(4)"
+      >
+        Next
+      </button>
     </div>
 
     <!-- Step 5: Body Part to Target -->
     <div id="step-5" class="step" style="display: none">
-      <h2>Step 5: Which body part do you want to target?</h2>
+      <h2>Muscle group you want to work?</h2>
       <div class="button-group">
         <button
           type="button"
@@ -155,7 +200,7 @@ block content %}
         <button
           type="button"
           class="big-button"
-          onclick="selectOption('body_part', 'full-body')"
+          onclick="selectOption('body_part', 'full body')"
         >
           Full Body
         </button>
@@ -166,11 +211,39 @@ block content %}
         >
           Core
         </button>
+        <button
+          type="button"
+          class="big-button"
+          onclick="selectOption('body_part', 'chest')"
+        >
+          Chest
+        </button>
+        <button
+          type="button"
+          class="big-button"
+          onclick="selectOption('body_part', 'shoulder')"
+        >
+          Shoulder
+        </button>
       </div>
-      <button type="button" onclick="previousStep(5)">Back</button>
-      <button type="submit">Generate Recommendations</button>
+      <button type="button" class="navi-button" onclick="previousStep(5)">
+        Back
+      </button>
+      <button type="submit">Submit</button>
     </div>
   </form>
+
+  <div
+    id="recommendations-container"
+    style="display: none"
+    class="recommendations-container"
+  >
+    <h2 class="recommendations-title">Your Workout Recommendations</h2>
+    <p class="recommendations-description">
+      Based on your answers, here are some exercises you might like.
+    </p>
+    <ul id="exercise-list-2"></ul>
+  </div>
 
   {% endblock %}
 </div>

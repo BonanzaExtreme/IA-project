@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Huwag Kang Tamad</title>
+    <link
+      href="{{ url_for('static', filename='css/tailwndloginSignup.css') }}"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="wrapper">
+      <h2>Registration</h2>
+      <form action="{{url_for('main.register')}}" method="POST">
+        <div class="input-box">
+          <input
+            type="text"
+            name="username"
+            placeholder="Create your username"
+            required
+          />
+        </div>
+        <div class="input-box">
+          <input
+            type="password"
+            name="password"
+            placeholder="Create Password"
+            required
+          />
+        </div>
+        <div class="input-box button">
+          <input type="Submit" value="Register Now" />
+        </div>
+        <div class="text">
+          <h3>
+            Already have an account?
+            <a href="{{url_for('main.login')}}">Login now</a>
+          </h3>
+        </div>
+      </form>
+    </div>
+
+    <script></script>
+  </body>
+</html>

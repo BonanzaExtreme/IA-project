@@ -1,5 +1,115 @@
 {% extends 'index.html' %} {% block title %}MyWorkout{% endblock %} {% block
 content %}
-<h1>Welcome to Page 1</h1>
-<p>This is the content for Page 1.</p>
+
+<div class="contentexercise">
+  <h1 class="section-title">My Liked Exercises</h1>
+
+  <div
+    id="exercise-list"
+    class="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mx-auto"
+  ></div>
+
+  <h2 class="section-subtitle">Exercises you might like</h2>
+  <div
+    id="recommendations-section"
+    class="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mx-auto"
+  ></div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const likedExercises = JSON.parse(localStorage.getItem('likedExercises')) || [];
+
+
+      if (likedExercises.length === 0) {
+        const noExercisesMessage = document.createElement('p');
+        noExercisesMessage.textContent = "You haven't liked any exercises yet.";
+        document.getElementById('exercise-list').appendChild(noExercisesMessage);
+      } else {
+
+        const exercises = {{ exercises|tojson }};
+
+
+        const likedExercisesDetails = exercises.filter(exercise =>
+          likedExercises.includes(exercise.Id)
+        );
+
+        likedExercisesDetails.forEach(exercise => {
+          const exerciseCard = document.createElement('div');
+          exerciseCard.classList.add('exercise-card', 'bg-white', 'p-4', 'rounded', 'shadow-lg');
+
+          exerciseCard.innerHTML = `
+            <h2 class="text-xl font-semibold mb-2">${exercise.Title}</h2>
+            <p><strong>Description:</strong> ${exercise.Description}</p>
+            <p><strong>Type:</strong> ${exercise.Type}</p>
+            <p><strong>Body Part:</strong> ${exercise.BodyPart}</p>
+            <p><strong>Equipment:</strong> ${exercise.Equipment}</p>
+            <p><strong>Level:</strong> ${exercise.Level}</p>
+            <p><strong>Age Group:</strong> ${exercise.Age}</p>
+            <p><strong>Reps:</strong> ${exercise.Reps}</p>
+            <p><strong>Instructions:</strong> ${exercise.Instructions}</p>
+
+            <button class="remove-btn" data-exercise-id="${exercise.Id}">
+              Remove from My Workout
+            </button>
+          `;
+
+
+          document.getElementById('exercise-list').appendChild(exerciseCard);
+        });
+        fetch('/myworkout', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ liked_exercises: likedExercises })
+        })
+          .then(response => response.json())
+          .then(recommendations => {
+            const recommendationsSection = document.getElementById('recommendations-section');
+            recommendationsSection.innerHTML = "";
+
+            if (recommendations.length === 0) {
+              const noRecommendationsMessage = document.createElement('p');
+              noRecommendationsMessage.textContent = "No recommendations available.";
+              recommendationsSection.appendChild(noRecommendationsMessage);
+            } else {
+              recommendations.forEach(recommendation => {
+                const recommendationCard = document.createElement('div');
+                recommendationCard.classList.add('exercise-card', 'bg-white', 'p-4', 'rounded', 'shadow-lg');
+
+                recommendationCard.innerHTML = `
+                  <h2 class="text-xl font-semibold mb-2">${recommendation.name}</h2>
+                  <p><strong>Description:</strong> ${recommendation.description}</p>
+                  <p><strong>Type:</strong> ${recommendation.type}</p>
+                  <p><strong>Target Body Part:</strong> ${recommendation.target}</p>
+                  <p><strong>Equipment:</strong> ${recommendation.equipment}</p>
+                  <p><strong>Reps:</strong> ${recommendation.reps}</p>
+                  <p><strong>Instructions:</strong> ${recommendation.instructions}</p>
+                `;
+
+                recommendationsSection.appendChild(recommendationCard);
+              });
+            }
+          });
+      }
+
+
+      const removeButtons = document.querySelectorAll('.remove-btn');
+      removeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const exerciseId = parseInt(this.getAttribute('data-exercise-id'));
+
+
+          let likedExercises = JSON.parse(localStorage.getItem('likedExercises')) || [];
+          likedExercises = likedExercises.filter(id => id !== exerciseId);
+          localStorage.setItem('likedExercises', JSON.stringify(likedExercises));
+
+
+          this.parentElement.remove();
+        });
+      });
+    });
+  </script>
+</div>
+
 {% endblock %}
